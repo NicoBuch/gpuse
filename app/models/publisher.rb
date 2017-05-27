@@ -2,6 +2,8 @@ class Publisher < ApplicationRecord
   validates :username, :password, presence: true
   validates :username, uniqueness: true
 
+  has_may :published_codes
+
   before_save :encrypt_password, if: :password_changed?
 
   def generate_access_token

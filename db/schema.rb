@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527132637) do
+ActiveRecord::Schema.define(version: 20170527154730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "frames", force: :cascade do |t|
+    t.integer  "published_code_id"
+    t.integer  "index"
+    t.string   "file"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["published_code_id"], name: "index_frames_on_published_code_id", using: :btree
+  end
+
+  create_table "published_codes", force: :cascade do |t|
+    t.text     "code"
+    t.integer  "publisher_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["publisher_id"], name: "index_published_codes_on_publisher_id", using: :btree
+  end
 
   create_table "publishers", force: :cascade do |t|
     t.string   "username",    null: false
@@ -24,4 +41,6 @@ ActiveRecord::Schema.define(version: 20170527132637) do
     t.index ["username"], name: "index_publishers_on_username", unique: true, using: :btree
   end
 
+  add_foreign_key "frames", "published_codes"
+  add_foreign_key "published_codes", "publishers"
 end

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       post :sign_up
       get :sign_in
       put :update_eth_address
+      post :publish
     end
   end
 end

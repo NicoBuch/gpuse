@@ -19,6 +19,12 @@ class PublishersController < ApplicationController
 
   def update_eth_address
     current_user.update(eth_address: params[:eth_address])
+    head :ok
+  end
+
+  def publish
+    publication = PublishedCode.create(publish_params.merge(publisher: current_user))
+    render json: { published_code_id: publication.id }, status: :created
   end
 
   private
@@ -39,5 +45,11 @@ class PublishersController < ApplicationController
   def current_user
     return nil unless decoded_auth_token.present?
     @current_user ||= Publisher.find_by_id(decoded_auth_token[:publisher_id])
+  end
+
+  def publish_params
+    params.require(:code)
+    params.require(:frames)
+    params.permit(:code, frames_attributes: [:index, :file])
   end
 end
