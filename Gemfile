@@ -44,6 +44,8 @@ gem 'active_model_serializers'
 
 gem 'foreman'
 
+# API Authentication
+gem 'jwt'
 gem 'rack-cors', :require => 'rack/cors'
 
 # Active Admin
