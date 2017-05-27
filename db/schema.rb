@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527154730) do
+ActiveRecord::Schema.define(version: 20170527164546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,9 @@ ActiveRecord::Schema.define(version: 20170527154730) do
     t.integer  "published_code_id"
     t.integer  "index"
     t.string   "file"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "completed",         default: false
     t.index ["published_code_id"], name: "index_frames_on_published_code_id", using: :btree
   end
 

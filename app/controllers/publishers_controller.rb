@@ -27,6 +27,15 @@ class PublishersController < ApplicationController
     render json: { published_code_id: publication.id }, status: :created
   end
 
+  def completed_publication
+    publication = PublishedCode.find_by_id(params[:published_code_id])
+    return render json: { error: 'Inexistent Publication' }, status: :bad_request if publication.nil?
+    if publication.frames.where(completed: false).any?
+      return render json: { message: 'Publication not completed yet' }, status: :no_content
+    end
+    render json: publication, status: :ok
+  end
+
   private
 
   def valid_publisher?
