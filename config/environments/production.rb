@@ -27,7 +27,7 @@ Rails.application.configure do
 
   config.web_socket_server_url = "wss://gpuse-api.herokuapp.com/cable"
 
-  config.action_cable.allowed_request_origins = ['https://gpuse-api.herokuapp.com', 'http://gpuse-api.herokuapp.com']
+  config.action_cable.allowed_request_origins = ['wss://gpuse-api.herokuapp.com', 'https://gpuse-api.herokuapp.com', 'http://gpuse-api.herokuapp.com']
 
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
