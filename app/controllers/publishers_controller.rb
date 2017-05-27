@@ -1,6 +1,6 @@
 class PublishersController < ApplicationController
 
-  skip_before_action :before_action :current_user, :authenticate_request, only: [:sign_in, :sign_up]
+  skip_before_action :current_user, :authenticate_request, only: [:sign_in, :sign_up]
 
   def sign_in
     if valid_publisher?
