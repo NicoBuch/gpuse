@@ -14,6 +14,7 @@ class PublishersController < ApplicationController
   def sign_up
     return render_username_already_taken if publisher.present?
     u = Publisher.create(username: params[:username], password: params[:password], eth_address: params[:eth_address])
+    return render json: { errors: u.errors.full_messages }, status: :bad_request unless u.valid?
     render json: { access_token: u.generate_access_token }, status: :ok
   end
 
