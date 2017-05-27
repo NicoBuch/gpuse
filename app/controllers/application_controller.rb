@@ -45,6 +45,9 @@ class ApplicationController < ActionController::Base
     @current_location ||= [params[:lat], params[:lng]]
   end
 
+  def index
+  end
+
   private
 
   def authenticate_request
