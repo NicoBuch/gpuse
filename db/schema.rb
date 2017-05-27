@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527180303) do
+ActiveRecord::Schema.define(version: 20170527204504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,10 @@ ActiveRecord::Schema.define(version: 20170527180303) do
     t.boolean  "completed",         default: false
     t.bigint   "time_elapsed"
     t.bigint   "weis_earned"
+    t.integer  "subscriber_id"
+    t.boolean  "taken",             default: false
     t.index ["published_code_id"], name: "index_frames_on_published_code_id", using: :btree
+    t.index ["subscriber_id"], name: "index_frames_on_subscriber_id", using: :btree
   end
 
   create_table "published_codes", force: :cascade do |t|
@@ -46,10 +49,13 @@ ActiveRecord::Schema.define(version: 20170527180303) do
 
   create_table "subscribers", force: :cascade do |t|
     t.string   "eth_address"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "connected",   default: false
+    t.boolean  "working",     default: false
   end
 
   add_foreign_key "frames", "published_codes"
+  add_foreign_key "frames", "subscribers"
   add_foreign_key "published_codes", "publishers"
 end
