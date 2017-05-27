@@ -293,6 +293,7 @@ GEM
     rack (2.0.1)
     rack-contrib (1.2.0)
       rack (>= 0.9.1)
+    rack-cors (0.4.1)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -523,6 +524,7 @@ DEPENDENCIES
   pghero
   puma (~> 3.0)
   pundit
+  rack-cors
   rails (~> 5.0.1)
   rails-controller-testing
   rails_12factor
@@ -555,4 +557,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.14.6
+   1.15.0

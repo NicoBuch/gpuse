@@ -21,6 +21,13 @@ module Gpuse
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options, :put, :patch, :delete]
+      end
+    end
+
     if Rails.application.secrets.email_recipients_interceptors.present?
       Mail.register_interceptor RecipientInterceptor.new(
         Rails.application.secrets.email_recipients_interceptors,

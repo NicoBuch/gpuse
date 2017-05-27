@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session
 
-  before_action :current_user, :authenticate_request, :set_locale, except: :health
+  before_action :current_user, :authenticate_request, :set_locale, except: [:health, :index]
 
   rescue_from 'NotAuthenticatedError' do
     render json: { error: 'Not Authorized' }, status: :unauthorized

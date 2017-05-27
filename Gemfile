@@ -44,6 +44,8 @@ gem 'active_model_serializers'
 
 gem 'foreman'
 
+gem 'rack-cors', :require => 'rack/cors'
+
 # Active Admin
 gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
 gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
