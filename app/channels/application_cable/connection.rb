@@ -3,12 +3,12 @@ module ApplicationCable
     identified_by :current_subscriber
 
     def connect
-      self.current_user = find_verified_user
+      self.current_subscriber = find_verified_user
     end
 
     private
       def find_verified_user
-        if verified_user = Subscriber.find_by(id: cookies.signed[:subscriber_id])
+        if verified_user = Subscriber.find_by_eth_address(request.params[:address])
           verified_user
         else
           reject_unauthorized_connection

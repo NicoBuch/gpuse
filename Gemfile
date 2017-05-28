@@ -31,6 +31,8 @@ gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 
 gem 'carrierwave'
+gem 'carrierwave-base64'
+
 
 # Authentication
 gem 'devise'

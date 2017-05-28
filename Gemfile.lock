@@ -115,6 +115,9 @@ GEM
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
+    carrierwave-base64 (2.5.2)
+      carrierwave (>= 0.8.0)
+      mime-types (~> 3.0)
     case_transform (0.2)
       activesupport
     codeclimate-engine-rb (0.4.0)
@@ -500,6 +503,7 @@ DEPENDENCIES
   byebug
   capybara
   carrierwave
+  carrierwave-base64
   codestats-metrics-reporter (= 0.1.9)
   coffee-rails (~> 4.2)
   database_cleaner
