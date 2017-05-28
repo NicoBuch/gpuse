@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get :sign_in
       put :update_eth_address
       post :publish
+      post :upload_frames
       get :completed_publication
     end
   end

@@ -5,6 +5,25 @@ class FileProcessingChannel < ApplicationCable::Channel
   end
 
   def ready
+    send_new_frame
+  end
+
+  def complete(data)
+    frame = Frame.find(data['frame_id']).update(file: data['file'], completed: true,
+                                                 time_elapsed: data['elapsed_time'],
+                                                 weis_earned: data['weis_earned'])
+    current_subscriber.update(working: false)
+    send_new_frame
+  end
+
+  def unsubscribed
+    current_subscriber.disconnect
+    current_subscriber.update!(working: false)
+  end
+
+  private
+
+  def send_new_frame
     while Frame.available.any?
       frame = find_frame
       if frame.present?
@@ -15,13 +34,6 @@ class FileProcessingChannel < ApplicationCable::Channel
       end
     end
   end
-
-  def unsubscribed
-    current_subscriber.disconnect
-    current_subscriber.update!(working: false)
-  end
-
-  private
 
   def find_frame
     Frame.transaction do

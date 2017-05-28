@@ -1,4 +1,4 @@
-class PublishersController < ApplicationController
+class SubscribersController < ApplicationController
 
   skip_before_action :current_user, :authenticate_request, only: [:sign_in, :sign_up]
 
@@ -18,28 +18,7 @@ class PublishersController < ApplicationController
     render json: { access_token: u.generate_access_token }, status: :ok
   end
 
-  def completed_frame
-    frame = Frame.find(params[:frame_id]).update(file: params[:file], completed: true,
-                                                 elapsed_time: params[:elapsed_time],
-                                                 weis_earned: params[:weis_earned])
-    current_user.update(working: false)
-    send_new_frame
-    head :ok
-  end
-
   private
-
-  def send_new_frame
-    while Frame.available.any?
-      frame = find_frame
-      if frame.present?
-        current_user.update!(working: true)
-        return ActionCable.server.broadcast(
-          "web_notifications_#{current_user.id}", url: frame.file.url, code: frame.published_code.code, frame_id: frame.id
-        )
-      end
-    end
-  end
 
   def valid_subscriber?
     return false if params[:eth_address].blank?
@@ -51,22 +30,11 @@ class PublishersController < ApplicationController
   end
 
   def subscriber
-    Subscriber.find_by_username(params[:eth_address])
+    Subscriber.find_by_eth_address(params[:eth_address])
   end
 
   def current_user
     return nil unless decoded_auth_token.present?
     @current_user ||= Subscriber.find_by_id(decoded_auth_token[:subscriber_id])
-  end
-
-  def find_frame
-    Frame.transaction do
-      f = Frame.available.first
-      f.lock!
-      f.update!(taken: true, subscriber: current_user)
-      f
-    end
-  rescue
-    nil
   end
 end

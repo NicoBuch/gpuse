@@ -26,8 +26,14 @@ class PublishersController < ApplicationController
   def publish
     publication = PublishedCode.create(publish_params.merge(publisher: current_user))
     return render json: { errors: publication.errors.full_messages }, status: :bad_request unless publication.valid?
-    Subscriber.where(connected: true, working: false).each do |subscriber|
-      frame = publication.frames.available.first
+    render json: { published_code_id: publication.id }, status: :created
+  end
+
+  def upload_frames
+    publication = PublishedCode.find(upload_frames_params[:published_code_id])
+    frame = Frame.create(published_code: publication, index: upload_frames_params[:index], file: upload_frames_params[:file])
+    subscriber = Subscriber.where(connected: true, working: false).first
+    if subscriber.present?
       frame.update!(taken: true, subscriber: subscriber)
       subscriber.update!(working: true)
       ActionCable.server.broadcast "web_notifications_#{subscriber.id}", url: frame.file.url, code: frame.published_code.code, frame_id: frame.id
@@ -66,7 +72,11 @@ class PublishersController < ApplicationController
 
   def publish_params
     params.require(:code)
-    params.require(:frames_attributes)
-    params.permit(:code, frames_attributes: [:index, :file])
+    params.permit(:code)
+  end
+
+  def upload_frames_params
+    params.require(:published_code_id)
+    params.permit(:published_code_id, :index, :file)
   end
 end
