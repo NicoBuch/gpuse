@@ -8,5 +8,11 @@ class FrameUpdater
                                                  weis_earned: data['weis_earned'])
     subscriber.update(working: false)
     FrameSender.new.perform(subscriber.id)
+
+    # TODO get file path to video
+    result_path = ""
+    ActionCable.server.broadcast(
+      "job_originator_#{frame.publish_code.address}", result_path: result_path, address: subscriber.eth_address
+    )
   end
 end
