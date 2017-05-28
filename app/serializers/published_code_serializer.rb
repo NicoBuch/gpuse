@@ -1,7 +1,8 @@
 class PublishedCodeSerializer < ActiveModel::Serializer
-  attributes :code, :url
+  attributes :code, :file
 
-  def url
-    Rails.root.joins("out_#{publication.id}.mp4")
+  def file
+    return nil if object.file.nil?
+    object.file.url
   end
 end
