@@ -29,6 +29,7 @@ coverage/*
 
 # Images
 public/uploads
+public/tmp
 
 dump.rdb
 

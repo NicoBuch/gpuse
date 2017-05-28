@@ -42,13 +42,16 @@ class PublishersController < ApplicationController
   end
 
   def completed_publication
-    publication = PublishedCode.find_by(id: params[:published_code_id], publisher_id: current_user.id)
+    publication = PublishedCode.includes(frames: :subscriber).find_by(id: params[:published_code_id], publisher: current_user)
+    # publication = PublishedCode.includes(frames: :subscriber).find_by(id: params[:published_code_id])
     return render json: { error: 'Inexistent Publication' }, status: :bad_request if publication.nil?
     if publication.frames.where(completed: false).any?
       return render json: { message: 'Publication not completed yet' }, status: :no_content
     end
-    system("ffmpeg -framerate 1/3 -pattern_type glob -i '#{File.join(Rails.root, 'public', "uploads/frame/#{publication.id}")}/*' -c:v libx264 '/tmp/out_#{publication.id}.mp4'")
-    publication.update(remote_file_url: "/tmp/out_#{publication.id}.mp4")
+    system("mkdir -p #{File.join(Rails.root, 'public', 'tmp/publications/')}")
+    system("rm #{File.join(Rails.root, 'public', "tmp/publications/#{publication.id}")}.mp4")
+    system("ffmpeg -r 30 -pattern_type glob -i '#{File.join(Rails.root, 'public', "uploads/frame/#{publication.id}")}/*.png' -c:v libx264 '#{File.join(Rails.root, 'public', "tmp/publications/#{publication.id}")}.mp4'")
+    publication.update(file: File.open("#{File.join(Rails.root, 'public', "tmp/publications/#{publication.id}")}.mp4"))
     render json: publication, status: :ok
   end
 

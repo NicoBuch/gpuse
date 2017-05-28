@@ -1,8 +1,10 @@
 class PublishedCodeSerializer < ActiveModel::Serializer
-  attributes :code, :file
+  attributes :file
 
   def file
     return nil if object.file.nil?
     object.file.url
   end
+
+  has_many :frames
 end
