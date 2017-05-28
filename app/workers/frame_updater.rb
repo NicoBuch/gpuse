@@ -12,7 +12,11 @@ class FrameUpdater
     # TODO get file path to video
     result_path = ""
     ActionCable.server.broadcast(
-      "job_originator_#{frame.publish_code.address}", result_path: result_path, address: subscriber.eth_address
+      "job_originator_#{frame.publish_code.address}", {
+        result_path: result_path,
+        address: subscriber.eth_address,
+        charge_amount: data['weis_earned']
+      }
     )
   end
 end
