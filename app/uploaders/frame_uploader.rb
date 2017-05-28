@@ -43,6 +43,6 @@ class FrameUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    "#{model.index.to_s.rjust(7, '0')}_#{original_filename}"
+    "#{model.index.to_s.rjust(7, '0')}.png"
   end
 end
