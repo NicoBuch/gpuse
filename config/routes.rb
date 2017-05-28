@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       put :update_eth_address
       post :publish
       post :upload_frames
-      get :completed_publication
+      get :completed_frames
     end
   end
 
