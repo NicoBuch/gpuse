@@ -42,7 +42,7 @@ class PublishersController < ApplicationController
   end
 
   def completed_frames
-    frames = Frame.where(published_code_id: params[:published_code_id], completed: false, delivered: false)
+    frames = Frame.includes(:subscriber).where(published_code_id: params[:published_code_id], completed: false, delivered: false)
     frames_json = ActiveModel::SerializableResource.new(frames).as_json
     frames.update_all(delivered: true)
     render json: frames_json, status: :ok
