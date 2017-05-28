@@ -1,5 +1,7 @@
 class PublishedCodeSerializer < ActiveModel::Serializer
-  attributes :code
+  attributes :code, :url
 
-  has_many :frames
+  def url
+    Rails.root.joins("out_#{publication.id}.mp4")
+  end
 end
