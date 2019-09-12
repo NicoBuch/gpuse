@@ -1,6 +1,7 @@
 class Publisher < ApplicationRecord
   validates :username, :password, presence: true
   validates :username, uniqueness: true
+  validates :address, uniqueness: true
 
   has_many :published_codes
 
